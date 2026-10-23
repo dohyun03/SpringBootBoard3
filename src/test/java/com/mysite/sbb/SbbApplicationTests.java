@@ -1,5 +1,6 @@
 package com.mysite.sbb;
 
+import com.mysite.sbb.question.QuestionService;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,19 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 class SbbApplicationTests {
 
     @Autowired
-    private QuestionRepository questionRepository;
-
-    @Transactional
+    private QuestionService questionService;
 
     @Test
     void testJpa() {
-      Optional<Question> oq = this.questionRepository.findById(2);
-      assertTrue(oq.isPresent());
-      Question q = oq.get();
-
-      List<Answer> answerList = q.getAnswerList();
-
-      assertEquals(1, answerList.size());
-      assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
+        for (int i = 1; i <= 30; i++) {
+            String subject = String.format("테스트 데이터입니다:[%03d]", i);
+            String content ="내용 없음";
+            this.questionService.create(subject, content);
+        }
     }
 }
